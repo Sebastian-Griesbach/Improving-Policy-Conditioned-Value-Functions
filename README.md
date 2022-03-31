@@ -1,0 +1,1 @@
+This repository contains the code of my master thesis "Improving Policy-Conditioned Value Functions". The code is already available, however it is not not documented nor accessible in any form. Future commits will add a functionality to reproduce experiments of the thesis and add some documentation.
