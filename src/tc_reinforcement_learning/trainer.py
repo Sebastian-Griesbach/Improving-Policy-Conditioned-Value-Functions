@@ -18,6 +18,20 @@ class ActorCriticTrainer():
     use_exploration_steps: bool = False,
     log_handler: LogHandler = None,
     disable_tqdm: bool = False) -> None:
+        """Creates train which manages all components to execute training routine.
+
+        Args:
+            ac_algo (ACAlgorithmHandler): Object that manages the specific algorithm.
+            critic_update_freq (int, optional): Frequency by which the critic is updated related to number of update steps. Defaults to 1.
+            critic_update_steps (int, optional): Number of critic update steps per update. Defaults to 10.
+            actor_update_freq (int, optional): Frequency by which the actor is updated related to number of update steps. Defaults to 1.
+            actor_update_steps (int, optional): Number of critic update steps per update. Defaults to 10.
+            evaluation_freq (int, optional): Frequency by wich the policy is evaluated related to number of exploration steps. Defaults to 500.
+            warmup_steps (int, optional): Number of warmup exploration steps. Defaults to 1000.
+            use_exploration_steps (bool, optional): Whether to use total time_step (including warmup) or only exploration steps for logging. Defaults to False.
+            log_handler (LogHandler, optional): Object that manages logging. Defaults to None.
+            disable_tqdm (bool, optional): Disables tqdm (don't show progress bar). Defaults to False.
+        """
 
         self.ac_algo = ac_algo
         self.disable_tqdm = disable_tqdm
@@ -48,7 +62,13 @@ class ActorCriticTrainer():
         else:
             self.get_logging_step = lambda: self.total_time_steps
 
-    def train(self, num_train_steps):
+    def train(self, num_train_steps: int):
+        """Execute training routine.
+
+        Args:
+            num_train_steps (int): number of training steps. Here this means number of exploration steps. Updates are execute according to Update frequency and number of update steps.
+        """
+
         num_warmup_steps = max(self.warmup_steps - self.total_exploration_steps, 0)
         for _ in tqdm(range(num_warmup_steps), disable=self.disable_tqdm, desc="warmup"):
             self.explore(enable_logging=False, warm_up=True)
@@ -77,7 +97,14 @@ class ActorCriticTrainer():
                 self.evaluate()
             self.log_handler.flush_logger()
 
-    def explore(self, enable_logging=True, warm_up=False):
+    def explore(self, enable_logging : bool =True, warm_up : bool = False):
+        """Execute exploration step.
+
+        Args:
+            enable_logging (bool, optional): Whether this step is logged. Defaults to True.
+            warm_up (bool, optional): Whether this step is part of the warmup. Defaults to False.
+        """
+
         logging_data, time_steps = self.ac_algo.explore(warm_up=warm_up)
         self.total_time_steps += time_steps
         self.total_exploration_steps += 1
@@ -86,15 +113,29 @@ class ActorCriticTrainer():
             self.log_handler.log_data(data_dict = logging_data, step = self.get_logging_step())
 
     def evaluate(self):
+        """Execute evaluation.
+        """
+
         logging_data = self.ac_algo.evaluate()
         
         if self.enable_logging:
             self.log_handler.log_data(data_dict = logging_data, step = self.get_logging_step())
 
     def get_policy(self):
+        """Extract policy.
+
+        Returns:
+            Callable: Wrapped policy that takes unnormalized observation as np array and returns action as np array.
+        """
         return self.ac_algo.get_policy()
 
-    def save_checkpoint(self, save_dir, prefix=""):
+    def save_checkpoint(self, save_dir : str, prefix : str =""):
+        """Saves the current trainer and all sub-components.
+
+        Args:
+            save_dir (str): Directory to save files to.
+            prefix (str, optional): Prefix for file names. Defaults to "".
+        """
         torch.save((self.total_train_steps, self.total_exploration_steps, self.total_time_steps), os.path.join(save_dir, prefix+constants.FILE_TRAINER_STEP_COUNT+".pt"))
 
         self.ac_algo.save_checkpoint(save_dir=save_dir, prefix=prefix)
@@ -102,7 +143,13 @@ class ActorCriticTrainer():
         if(self.enable_logging):
             self.log_handler.save_checkpoint(save_dir, prefix)
 
-    def load_checkpoint(self, save_dir, prefix=""):
+    def load_checkpoint(self, save_dir : str, prefix=""):
+        """Loads trainer and all subcomponents from a checkpoint.
+
+        Args:
+            save_dir (str): Directory of checkpoint.
+            prefix (str, optional): Prefix of file names. Defaults to "".
+        """
         self.total_train_steps, self.total_exploration_steps, self.total_time_steps = torch.load(os.path.join(save_dir, prefix+constants.FILE_TRAINER_STEP_COUNT+".pt"))
 
         self.ac_algo.load_checkpoint(save_dir=save_dir, prefix=prefix)
