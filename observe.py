@@ -27,13 +27,13 @@ def _find_run_folder_and_config(experiment, experiment_id):
     return run_folder, config
 
 def main():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Observe a trained Policy.')
     parser.add_argument('experiment', type=str,
                         help='Name of the experiment to be executed.')
 
     parser.add_argument('time_steps', type=int, help='Number of timesteps to execute.')
 
-    parser.add_argument('--experiment_id', type=int, help='experiment id to load.')
+    parser.add_argument('--experiment_id', type=int, help='Experiment id to load. Takes latest if none is given.')
 
     parser.add_argument('--render', dest='render', action='store_true')
     parser.add_argument('--no-render', dest='render', action='store_false')
@@ -65,6 +65,9 @@ def main():
         raise Exception(f"No checkpoint {checkpoint_folder} found.")
 
     policy = trainer.get_policy()
+
+    print(f"Loaded policy from Checkpoint {checkpoint_folder}")
+
     done = True
     cum_rewards = []
     cur_rewards = []

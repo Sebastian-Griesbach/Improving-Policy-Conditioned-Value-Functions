@@ -25,14 +25,14 @@ def _find_run_folder_and_config(experiment, experiment_id):
     return run_folder, config
 
 def main():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Executing or continuing an experiment with a specific configuration.')
     parser.add_argument('experiment', type=str,
                         help='Name of the experiment to be executed.')
 
     parser.add_argument('train_steps', type=int,
                         help='Number of train steps to execute the config on.')
 
-    parser.add_argument('--experiment_id', type=int, help='experiment id to be continued')
+    parser.add_argument('--experiment_id', type=int, help='Experiment id to be continued. Creates new run if None.')
 
     parser.add_argument('--device', type=str, help="Cuda device to execute experiment on.", default= "cuda" if torch.cuda.is_available() else "cpu")
 
@@ -57,13 +57,15 @@ def main():
 
     if os.path.exists(checkpoint_folder):
         trainer.load_checkpoint(checkpoint_folder)
-        print("Continuing from checkpoint.")
+        print(f"Continuing from checkpoint {checkpoint_folder}")
 
+    print(f"Starting Training in {run_folder}")
     trainer.train(args.train_steps)
     
     if not os.path.isdir(checkpoint_folder):
         os.mkdir(checkpoint_folder)
 
+    print(f"Saving Checkpoint {checkpoint_folder}")
     trainer.save_checkpoint(checkpoint_folder)
 
 if __name__ == "__main__":
