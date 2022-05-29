@@ -2,6 +2,19 @@
 # Improving Policy-Conditioned Value Functions
 This repository contains the code of my master thesis "Improving Policy-Conditioned Value Functions". Most of the experiments contained in the Thesis can be simply reproduced with the provided configurations and scripts. In the following the details on how to do so are provided.
 
+## Installation
+Mujoco has to be installed separately. Refer to the official Repository on instructions how to do so https://github.com/openai/mujoco-py.
+Install the requirements in `requirments.txt` with Anaconda via 
+```
+conda create --name pcvf --file requirments.txt
+```
+The requirements might have to be adjusted if the use of cuda is desired. 
+After installing the requirements execute the following command in the directory of the repository.
+```
+pip install -e .
+```
+
+
 ## Run experiments
 The `experiments` folder contains configurations for most experiments of the thesis in a costume format. The script `execute_experiment.py` offers the possibility to run these configurations. For Example 
 ```
