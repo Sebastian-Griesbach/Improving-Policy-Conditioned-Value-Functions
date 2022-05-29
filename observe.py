@@ -91,7 +91,6 @@ def main():
 
     print(f"Number of episodes {num_episodes}")
     print(f"Mean episode return: {reward_mean} (+/- {reward_std})")
-    
 
 if __name__ == "__main__":
     main()
