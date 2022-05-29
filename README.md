@@ -1,6 +1,6 @@
 
 # Improving Policy-Conditioned Value Functions
-This repository contains the code of my master thesis "Improving Policy-Conditioned Value Functions". Most of the experiments contained in the Thesis can be simply reproduced with the provided configurations and scripts. In the following the details on how to do so are provided.
+This repository contains the code of my master thesis "Improving Policy-Conditioned Value Functions". The full thesis can be found int `thesis.pdf`. Most of the experiments contained in the Thesis can be simply reproduced with the provided configurations and scripts. In the following the details on how to do so are provided.
 
 ## Installation
 Mujoco has to be installed separately. Refer to the official repository on instructions how to do so https://github.com/openai/mujoco-py.
