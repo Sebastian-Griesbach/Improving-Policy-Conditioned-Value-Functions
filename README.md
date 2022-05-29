@@ -3,10 +3,10 @@
 This repository contains the code of my master thesis "Improving Policy-Conditioned Value Functions". Most of the experiments contained in the Thesis can be simply reproduced with the provided configurations and scripts. In the following the details on how to do so are provided.
 
 ## Installation
-Mujoco has to be installed separately. Refer to the official Repository on instructions how to do so https://github.com/openai/mujoco-py.
-Install the requirements in `requirments.txt` with Anaconda via 
+Mujoco has to be installed separately. Refer to the official repository on instructions how to do so https://github.com/openai/mujoco-py.
+Install the requirements in `requirements.txt` with Anaconda via 
 ```
-conda create --name pcvf --file requirments.txt
+conda create --name pcvf --file requirements.txt
 ```
 The requirements might have to be adjusted if the use of cuda is desired. 
 After installing the requirements execute the following command in the directory of the repository.
@@ -20,11 +20,11 @@ The `experiments` folder contains configurations for most experiments of the the
 ```
 python execute_experiment.py "hc_comp_s_pcac_fp" 50000
 ```
-Will run the experiment with the name `hc_comp_s_pcac_fp` for 50000 exploration steps. How many time steps in the environment are executed for one exploration step depends on the specific algorithm. The update frequency is set int the according `config.ini` file. The results of the experiment will be saved in the according experiment folder. Rerunning the command will result in a newly initialized run but old runs can also be continued by including the `--run_id` option as follows:
+will run the experiment with the name `hc_comp_s_pcac_fp` for 50000 exploration steps. How many time steps in the environment are executed for one exploration step depends on the specific algorithm. All other parameters are set in the according `config.ini` file. The results of the experiment will be saved in the experiment folder. Rerunning the command will result in a newly initialized run but old runs can also be continued by including the `--run_id` option as follows:
 ```
 python execute_experiment.py "hc_comp_s_pcac_fp" 50000 --run_id 1 --device "cpu"
 ```
-Also `--device` specifies the device to run the experiment on. By default the script will check whether cuda is available and will use it if so. This option may be used to overrule this default if desired.
+Also `--device` specifies the device to run the experiment on. By default the script will check whether cuda is available and will use it if so. This option may be used to overrule this default.
 
 ## Observe trained policies
 After executing an experiment the resulting policy can be viewed with the `observe.py` script as following:
