@@ -16,7 +16,7 @@ pip install -e .
 
 
 ## Run experiments
-The `experiments` folder contains configurations for most experiments of the thesis in a costume format. The script `execute_experiment.py` offers the possibility to run these configurations. For Example 
+The `experiments` folder contains configurations for most experiments of the thesis in a custom format. The script `execute_experiment.py` offers the possibility to run these configurations. For Example 
 ```
 python execute_experiment.py "hc_comp_s_pcac_fp" 50000
 ```
