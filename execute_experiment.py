@@ -4,7 +4,7 @@ import torch
 
 from tc_configurator.configuration_builder import GenericConfigurationBuilder
 
-def _find_run_folder_and_config(experiment, experiment_id):
+def _find_run_folder_and_config(experiment, run_id):
     experiment_folder = os.path.abspath(f"./experiments/{experiment}")
     config = os.path.join(experiment_folder, "config.ini")
 
@@ -12,14 +12,14 @@ def _find_run_folder_and_config(experiment, experiment_id):
     if(not os.path.isdir(runs_folder)):
         os.mkdir(runs_folder)
     
-    if(experiment_id == None):
-        existing_experiment_ids = os.listdir(runs_folder)
-        if len(existing_experiment_ids) > 0:
-            experiment_id = max(list(map(int,existing_experiment_ids))) + 1
+    if(run_id == None):
+        existing_run_ids = os.listdir(runs_folder)
+        if len(existing_run_ids) > 0:
+            run_id = max(list(map(int,existing_run_ids))) + 1
         else:
-            experiment_id = 1
+            run_id = 1
 
-    run_folder = os.path.join(runs_folder, str(experiment_id))
+    run_folder = os.path.join(runs_folder, str(run_id))
     if not os.path.isdir(run_folder):
         os.mkdir(run_folder)
     return run_folder, config
@@ -32,13 +32,13 @@ def main():
     parser.add_argument('train_steps', type=int,
                         help='Number of train steps to execute the config on.')
 
-    parser.add_argument('--experiment_id', type=int, help='Experiment id to be continued. Creates new run if None.')
+    parser.add_argument('--run_id', type=int, help='Run id to be continued. Creates new run if none or new integer.')
 
     parser.add_argument('--device', type=str, help="Cuda device to execute experiment on.", default= "cuda" if torch.cuda.is_available() else "cpu")
 
     args = parser.parse_args()
 
-    run_folder, config = _find_run_folder_and_config(args.experiment, args.experiment_id)
+    run_folder, config = _find_run_folder_and_config(args.experiment, args.run_id)
 
     config_inputs_dict = {
     "configuration_path": config,
