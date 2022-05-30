@@ -14,6 +14,14 @@ class EnvironmentHandler(ABC):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """The environment handler interacts with the gym actual environment and provides the required information ot the algorithm to the replay buffer.
+
+        Args:
+            exploration_environment (gym.Env): Environment used for exploration.
+            evaluation_environment (gym.Env, optional): Environment used for evaluation. If None this is the same as the exploration_environment. Defaults to None.
+            normalize_observations (bool, optional): Whether to normalize observation before passing them to the policy (this does not affect the data given to the replay buffer). Defaults to True.
+            normalization_n_bound (int, optional): Whether the online normalization has a maximal n value. Defaults to np.inf.
+        """
 
         self.exploration_environment = exploration_environment
 
@@ -29,15 +37,43 @@ class EnvironmentHandler(ABC):
         self.online_normalization = OnlineNormalization(to_normalize_info=to_normalize_info, n_bound=normalization_n_bound)
 
     def normalize_obs(self, obs, update=True):
+        """Normalize observation and put into dictionary.
+
+        Args:
+            obs (np.ndarray): Observation to normalize
+            update (bool, optional): Whether to update online normalization with this value or not. Defaults to True.
+
+        Returns:
+            np.ndarray: Normalized observation
+        """
         data_dict = {constants.DATA_OBSERVATIONS: obs}
         return self._normalize(data_dict=data_dict, update=update)[constants.DATA_OBSERVATIONS]
 
     def _normalize(self, data_dict, update=True):
+        """Normalize data dictionary.
+
+        Args:
+            data_dict (Dict): Data to normalize.
+            update (bool, optional): Whether to update online normalization with this value or not. Defaults to True.
+
+        Returns:
+            Dict: Normalized data dictionary.
+        """
         if(update):
             self.online_normalization.update_stats(data_dict)
         return self.online_normalization.normalize(data_dict)
 
     def _evaluation_rollout(self, policy, environment, update_normalization):
+        """Execute an evaluation rollout
+
+        Args:
+            policy: Policy to evaluate.
+            environment: Environment to use for evaluation.
+            update_normalization (bool): Whether to update online normalization with this value or not.
+
+        Returns:
+            float: Return of the rollout.
+        """
         obs = environment.reset().reshape(1,-1)
         norm_obs = self.normalize_obs(obs = obs, update = update_normalization)
         done = False
@@ -51,17 +87,41 @@ class EnvironmentHandler(ABC):
         return sum(rewards)
 
     def save_checkpoint(self, save_dir, prefix=""):
+        """Saves checkpoint of all stateful parts.
+
+        Args:
+            save_dir (str): Directory to save to.
+            prefix (str, optional): Prefix string for file names. Defaults to "".
+        """
         self.online_normalization.save_checkpoint(save_dir, prefix+"environment_handler_")
 
     def load_checkpoint(self, save_dir, prefix=""):
+        """Loads Checkpoint.
+
+        Args:
+            save_dir (str): Directory to load checkpoint from
+            prefix (str, optional): Prefix string for file names. Defaults to "".
+        """
         self.online_normalization.load_checkpoint(save_dir, prefix+"environment_handler_")
 
     @abstractmethod
     def explore(self, policy, update_normalization=True):
+        """Execute exploration and return relevant information (depending on algorithm)
+
+        Args:
+            policy: Policy to use for exploration.
+            update_normalization (bool, optional): Whether to update online normalization with this value or not. Defaults to True.
+        """
         ...
 
     @abstractmethod
     def evaluate(self, policy, num_runs):
+        """Execute evaluation of policy
+
+        Args:
+            policy: Policy to evaluate.
+            num_runs (int): Number of evaluation episodes to perform.
+        """
         ...
 
 
