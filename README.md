@@ -68,7 +68,7 @@ The names are structured as follows: *environment_algorithm_embedding_other*
     <li>s - state
     <li>ss - start state
     <li>comp - Comparing
-    <li>pcac - Policy-conditioned Actor Critic
+    <li>pcac - Policy-Conditioned Actor Critic
     <li>ma - Multi Actor
     <li>fp - Fingerprinting
     <li>ne - Neuron embedding

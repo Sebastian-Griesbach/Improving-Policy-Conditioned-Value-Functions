@@ -132,6 +132,11 @@ class StartStateMonteCarloEnvironmentHandler(EnvironmentHandler):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment Handler that completes a full episode and records only the total return.
+
+        Args:
+            See EnvironmentHandler
+        """
 
         super().__init__(exploration_environment = exploration_environment,
                         evaluation_environment = evaluation_environment,
@@ -170,6 +175,12 @@ class StateMonteCarloEnvironmentHandler(EnvironmentHandler):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment Handler that completes a full episode and calculates back the Monte Carlo return for each time step individually.
+
+        Args:
+            See EnvironmentHandler
+            discount (float, optional): Discount factor for future rewards. If none the results will be same as if it was 1, but is calculated more efficiently. Defaults to None.
+        """
 
         super().__init__(exploration_environment = exploration_environment,
                         evaluation_environment = evaluation_environment,
@@ -218,6 +229,11 @@ class StateTDEnvironmentHandler(EnvironmentHandler):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment handler that records data that is needed for TD errors without actions, namely: state, reward, next state, done
+
+        Args:
+            See EnvironmentHandler
+        """
 
         super().__init__(exploration_environment = exploration_environment,
                         evaluation_environment = evaluation_environment,
@@ -265,6 +281,11 @@ class StateActionTDEnvironmentHandler(EnvironmentHandler):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment handler that records data that is needed for TD errors with actions, namely: state, action, reward, next state, done
+
+        Args:
+            See EnvironmentHandler
+        """
 
         super().__init__(exploration_environment = exploration_environment,
                         evaluation_environment = evaluation_environment,
@@ -316,6 +337,12 @@ class StateActionMonteCarloEnvironmentHandler(StateMonteCarloEnvironmentHandler)
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment handler similar to StateMonteCarloEnvironmentHandler. It additionally also records the actions during the episode.
+
+        Args:
+            See StateMonteCarloEnvironmentHandler
+        """
+        
         super().__init__(exploration_environment, 
                         discount=discount,
                         evaluation_environment=evaluation_environment, 
@@ -358,6 +385,13 @@ class StartStateActionMonteCarloEnvironmentHandler(StateMonteCarloEnvironmentHan
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment handler similar to StateActionMonteCarloEnvironmentHandler, but it only records the total return across the episode.
+
+        Args:
+            See StateMonteCarloEnvironmentHandler
+        """
+
+
         super().__init__(exploration_environment, 
                         discount=discount,
                         evaluation_environment=evaluation_environment, 
@@ -400,6 +434,13 @@ class StateNStepEnvironmentHandler(EnvironmentHandler):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment Handler that executes N steps in the environment and records the first state, the last state, the partial discounted future reward and whether the episode terminated.
+
+        Args:
+            n_steps (int): How many time steps are executed per exploration call.
+            discount (float): Future reward discount factor.
+            see EnvironmentHandler
+        """
 
         super().__init__(exploration_environment = exploration_environment,
                         evaluation_environment = evaluation_environment,
@@ -457,6 +498,12 @@ class StateActionEnvironmentHandler(EnvironmentHandler):
                 evaluation_environment: gym.Env = None,
                 normalize_observations: bool = True,
                 normalization_n_bound: int = np.inf):
+        """Environment handler that performs n time steps in the environment and meanwhile records state, action, reward, next state, done at EACH time step.
+
+        Args:
+            n_steps (int): Number of time steps to execute per exploration call.
+            see EnvironmentHandler
+        """
 
         super().__init__(exploration_environment = exploration_environment,
                         evaluation_environment = evaluation_environment,
