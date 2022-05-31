@@ -1,6 +1,6 @@
 
 # Improving Policy-Conditioned Value Functions
-This code has been developed during my master's thesis "Improving Policy-Conditioned Value Functions". The full thesis can be found in `thesis.pdf`. The aim was to create a framework that would make it easy to implement vastly different Reinforcement Learning algorithms and to compare them. Most of the experiments contained in the thesis can be simply reproduced with the provided configurations and scripts. In the following the details on how to do so are provided.
+This code has been developed during my master's thesis "Improving Policy-Conditioned Value Functions". The full thesis can be found in `thesis.pdf`. The aim was to create a framework that would make it easy to implement vastly different Reinforcement Learning algorithms and to compare them. Most of the experiments contained in the thesis can be reproduced with the provided configurations and scripts. In the following the details on how to do so are provided.
 
 ## Installation
 Mujoco has to be installed separately. Refer to the official repository on instructions how to do so https://github.com/openai/mujoco-py. <p>
@@ -16,11 +16,11 @@ pip install -e .
 
 
 ## Run experiments
-The `experiments` folder contains configurations for most experiments of the thesis in a custom format. The script `execute_experiment.py` offers the possibility to run these configurations. For Example 
+The `experiments` folder contains configurations for most experiments of the thesis in a custom format. The script `execute_experiment.py` offers the possibility to run these configurations. For example 
 ```
 python execute_experiment.py hc_comp_s_pcac_fp 50000
 ```
-will run the experiment with the name `hc_comp_s_pcac_fp` for 50000 exploration steps. How many time steps in the environment are executed for one exploration step depends on the specific algorithm. All other parameters are set in the according `config.ini` file (here *experiments/hc_comp_s_pcac_fp/config.ini*). At the end of the run a Checkpoint is created in the experiment Folder with an incremental run ID. This Checkpoint may be used to evaluate the policy or continue training. Rerunning the command will result in a newly initialized run. Old runs can also be continued by including the `--run_id` option as follows:
+will run the experiment with the name `hc_comp_s_pcac_fp` for 50000 exploration steps. How many time steps in the environment are executed for one exploration step depends on the specific algorithm. All other parameters are set in the according `config.ini` file (here *experiments/hc_comp_s_pcac_fp/config.ini*). At the end of the run a checkpoint is created in the experiment folder with an incremental run ID. This checkpoint may be used to evaluate the policy or continue training. Rerunning the command will result in a newly initialized run. Old runs can also be continued by including the `--run_id` option as follows:
 ```
 python execute_experiment.py hc_comp_s_pcac_fp 50000 --run_id 1 --device "cpu"
 ```
@@ -80,4 +80,4 @@ The names are structured as follows: *environment_algorithm_embedding_other*
 See thesis for details on individual methods.
 
 ## Documentation
-The Reinforcement Learning parts of the code, and some other bits, are documented with DocStrings in the code. If a interface exists the purpose of all functions are documented within the interface. Specific subclasses are only documented in their general purpose or when a sufficient difference exists.
+The Reinforcement Learning parts of the code, and some other bits, are documented with DocStrings in the code. If an interface exists, the purpose of all functions are documented within the interface. Specific subclasses are only documented in their general purpose or when a sufficient difference exists.
