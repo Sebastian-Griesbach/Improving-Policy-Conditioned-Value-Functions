@@ -13,26 +13,56 @@ import tc_utils.constants as constants
 
 class ReplayBuffer(ABC):
     def __init__(self) -> None:
+        """Interface for Replay buffers.
+        """
         super().__init__()
 
     @abstractmethod
     def add(self, transition_dict: Dict[str, np.ndarray]):
+        """Add data to the replay buffer.
+
+        Args:
+            transition_dict (Dict[str, np.ndarray]): Data to add to the replay buffer.
+        """
         ...
 
     @abstractmethod
     def sample(self, batch_size: int):
+        """Sample data from the replay buffer.
+
+        Args:
+            batch_size (int): Number of entries to return.
+        """
         ...
 
     @abstractmethod
     def save_checkpoint(self, save_dir, prefix=""):
+        """Saves checkpoint of all stateful parts.
+
+        Args:
+            save_dir (str): Directory to save to.
+            prefix (str, optional): Prefix string for file names. Defaults to "".
+        """
         ...
 
     @abstractmethod
     def load_checkpoint(self, save_dir, prefix=""):
+        """Loads Checkpoint.
+
+        Args:
+            save_dir (str): Directory to load checkpoint from
+            prefix (str, optional): Prefix string for file names. Defaults to "".
+        """
         ...
 
 class FastReplayBuffer(ReplayBuffer):
     def __init__(self, max_size: int, replay_buffer_info: Dict) -> None:
+        """Replay buffer using the cpprb library for performance.
+
+        Args:
+            max_size (int): Maximal number of entries before oldest entries are overwritten.
+            replay_buffer_info (Dict): Information needed to initialize the replay buffer. (What data will it hold)
+        """
         super().__init__()
         self.replay_buffer = cpprb.ReplayBuffer(max_size, replay_buffer_info)
 
@@ -51,6 +81,13 @@ class FastReplayBuffer(ReplayBuffer):
 
 class NormalizingReplayBuffer(ReplayBuffer):
     def __init__(self, max_size: int, replay_buffer_info: Dict, to_normalize: List[str]) -> None:
+        """Replay buffer that handles normalization such that data is stored in it original form and everytime is is sampled it is normalized according to the distribution of the saved data.
+
+        Args:
+            max_size (int): Maximal number of entries before oldest entries are overwritten.
+            replay_buffer_info (Dict): Information needed to initialize the replay buffer. (What data will it hold)
+            to_normalize (List[str]): List of data keys that should be normalized on sampling.
+        """
         super().__init__()
         self.replay_buffer = cpprb.ReplayBuffer(max_size, replay_buffer_info)
         self.max_size = max_size
@@ -83,6 +120,15 @@ class RedundancyReplayBuffer(ReplayBuffer):
     RB_KEY_REDUNDANCY_ID = "redundancy_id"
 
     def __init__(self, max_size: int, replay_buffer_info: Dict, to_normalize: List[str], redundancy_keys: List[str], num_redundancys: int) -> None:
+        """Replay buffer that efficiently stores redundant data such that it is not physically stored multiple time but just referenced multiple times. It also has the same normalization functionality as NormalizingReplayBuffer,
+
+        Args:
+            max_size (int): Maximal number of entries before oldest entries are overwritten.
+            replay_buffer_info (Dict): Information needed to initialize the replay buffer. (What data will it hold)
+            to_normalize (List[str]): List of data keys that should be normalized on sampling.
+            redundancy_keys (List[str]): List of keys that will hold redundant information.
+            num_redundancys (int): Number of redundancies per add call. This has to be a constant with this implementation due to performance reasons.
+        """
         super().__init__()
         self.num_unique_entries = math.ceil(max_size/num_redundancys)
 
