@@ -80,4 +80,4 @@ The names are structured as follows: *environment_algorithm_embedding_other*
 See thesis for details on individual methods.
 
 ## Documentation
-The Reinforcment Learning parts of the code are documented with Docstrings in the code. However the documentation is not yet complete.
+The Reinforcement Learning parts of the code are documented with DocStrings in the code. If a interface exists the purpose of all functions are documented within the interface. Specific subclasses are only documented in their general purpose or when a sufficient difference exists. The documentation is not yet complete.
