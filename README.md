@@ -38,28 +38,29 @@ python observe.py "hc_comp_s_pcac_fp" 1000 --run_id 1 --no-render
 The option `--no-render` disables the rendering. At the end of the time steps the mean and standard deviation of the return across all episodes is printed.
 
 ## Experiments
-The repository contains the following Experiments:
-```
-hc_comp_s_pcac_fp
-hc_comp_ss_pcac_fp
-hc_nstep_s_pcac_fp
-hc_psvf
-hc_s_pcac_fe_small
-hc_s_pcac_fp
-hc_s_pcac_fp_small
-hc_s_pcac_ne_small
-pen_comp_s_pcac_fp
-pen_comp_ss_pcac_fp
-pen_ma_comp_ss_pcac_fp
-pen_ma_nstep_s_pcac_fp
-pen_nstep_s_pcac_fp
-pen_pavf
-pen_pssvf
-pen_psvf
-pen_s_pcac_fe
-pen_s_pcac_fp
-pen_s_pcac_ne
-```
+The following table shows which experiments are contained in this repository and in which figures they (or very similar configurations) have been used. 
+|Experiment identifier| Figures |
+|---|---|
+|hc_comp_s_pcac_fp| 14, 17 |
+|hc_comp_ss_pcac_fp| 14 |
+|hc_nstep_s_pcac_fp| 13, 17 |
+|hc_psvf| 2, 17 |
+|hc_s_pcac_fe_small| 8 |
+|hc_s_pcac_fp| 13, 14, 17 |
+|hc_s_pcac_fp_small| 8 |
+|hc_s_pcac_ne_small| 8 |
+|pen_comp_s_pcac_fp| 14 |
+|pen_comp_ss_pcac_fp| 14, 15, 17 |
+|pen_ma_comp_ss_pcac_fp| 15, 16 |
+|pen_ma_nstep_s_pcac_fp| 15, 16 |
+|pen_nstep_s_pcac_fp| 13, 15, 17 |
+|pen_pavf| - |
+|pen_pssvf| 2, 17 |
+|pen_psvf| 2 |
+|pen_s_pcac_fe| 8, 13, 14, 15, 16, 17 |
+|pen_s_pcac_fp| 8, 11 |
+|pen_s_pcac_ne| 8, 12 |
+
 The names are structured as follows: *environment_algorithm_embedding_other*
 <p>Shorthands:
 <ul>
@@ -77,7 +78,15 @@ The names are structured as follows: *environment_algorithm_embedding_other*
     <li>pavf - Parameter-Based State-Action Value Function
     <li>pssvf - Parameter-Based Start State Value Function
 </ul>
-See thesis for details on individual methods.
+
+See `thesis.pdf` for details on individual methods.
 
 ## Documentation
 The Reinforcement Learning parts of the code, and some other bits, are documented with DocStrings in the code. If an interface exists, the purpose of all functions are documented within the interface. Specific subclasses are only documented in their general purpose or when a sufficient difference exists.
+
+## Example Policies
+A Policy trained with the N-step PCAC algorithm in the Pendulum-v0 environment.
+![(Policy learned by N-step PCAC on the Pendulum-v0 environment)](./animations/n-step_pcac_pendulum.gif)
+
+A Policy trained with the Comparing State PCAC algorithm in the HalfCHeetah-v2 environment. Footage is at half speed to make motion more visible.
+![(Policy learned by Comparing State PCAC on the HalfCHeetah-v2 environment)](./animations/comp_s_pcac_hc.gif)
