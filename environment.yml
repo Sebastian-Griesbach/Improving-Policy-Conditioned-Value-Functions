@@ -1,0 +1,10 @@
+name: pcvf
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - cpuonly
+  - pytorch
+  - torchaudio
+  - torchvision
+  - gym

@@ -4,7 +4,11 @@ This code has been developed during my master's thesis "Improving Policy-Conditi
 
 ## Installation
 Mujoco has to be installed separately. Refer to the official repository on instructions how to do so https://github.com/openai/mujoco-py. <p>
-Install the requirements in `requirements.txt` with Anaconda via 
+Using Anaconda you can create the environment via 
+```
+conda env create -f environment.yml
+```
+Alternatively `requirements.txt` contains all exact versions that have been tested. These can be installed with Anaconda via
 ```
 conda create --name pcvf --file requirements.txt
 ```
