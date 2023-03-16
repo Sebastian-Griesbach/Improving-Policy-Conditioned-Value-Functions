@@ -96,5 +96,5 @@ The Reinforcement Learning parts of the code, and some other bits, are documente
 A Policy trained with the N-step PCAC algorithm in the Pendulum-v0 environment.
 ![(Policy learned by N-step PCAC on the Pendulum-v0 environment)](./animations/n-step_pcac_pendulum.gif)
 
-A Policy trained with the Comparing State PCAC algorithm in the HalfCHeetah-v2 environment. Footage is at half speed to make motion more visible.
+A Policy trained with the Comparing State PCAC algorithm in the HalfCHeetah-v2 environment.
 ![(Policy learned by Comparing State PCAC on the HalfCHeetah-v2 environment)](./animations/comp_s_pcac_hc.gif)
